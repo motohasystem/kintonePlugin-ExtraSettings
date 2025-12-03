@@ -1,0 +1,42 @@
+{
+    "manifest_version": 1,
+    "version": "0.1.0",
+    "type": "APP",
+    "name": {
+        "en": "[DEBUG] General-Purpose JSON Config Plugin",
+        "ja": "[DEBUG] 汎用J型設定プラグイン"
+    },
+    "icon": "image/camet.png",
+    "description": {
+        "en": "[DEBUG] General-Purpose JSON Config Plugin",
+        "ja": "[DEBUG] 汎用J型設定プラグイン"
+    },
+    "homepage_url": {
+        "ja": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab",
+        "en": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab",
+        "zh": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab"
+    },
+    "desktop": {
+        "js": [
+            "https://localhost:7740/js/desktop.js"
+        ],
+        "css": [
+            "css/51-modern-default.css",
+            "https://localhost:7740/css/desktop.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "https://localhost:7740/js/config.js"
+        ],
+        "css": [
+            "css/51-modern-default.css",
+            "https://localhost:7740/css/config.css"
+        ],
+        "required_params": [
+            "config"
+        ]
+    },
+    "mobile": {}
+}

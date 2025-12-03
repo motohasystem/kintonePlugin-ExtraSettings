@@ -1,0 +1,99 @@
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+
+}
+
+.subtitle-desc {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+
+}
+
+h4 .item-caption{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+h4 .item-caption-required{
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: red;
+
+}
+
+
+
+/* 後方互換用スタイル */
+.plugin-space-heading {
+  font-size: 1.5rem;
+  margin: 0.8rem;
+}
+.plugin-space-message {
+  display: inline-block;
+  font-size: 1.2em;
+  margin: 0.8rem;
+  margin-top: 0;
+}
+
+
+.progress_in_dialog {
+    width: 100%;
+    height: 12px;
+    display: none;
+    margin-bottom: 6px;
+    border-radius: 15px;
+}
+
+.progress_in_dialog::-webkit-progress-bar {
+    border-radius: 15px;
+}
+
+.progress_in_dialog::-webkit-progress-value {
+    border-radius: 15px;
+}
+
+.progress_in_dialog::-moz-progress-bar {
+    border-radius: 15px;
+}
+
+.progress_in_dialog::-ms-fill {
+    border-radius: 15px;
+}
+
+.radio_checkbox_overwrite {
+    display: inline-block;
+    padding-top: 4px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 0.5em;
+    width: 100%;
+    text-align: center;
+}
+
+/** bootstrap対策 */
+/* .gaia-argoui-menuitem, .gaia-argoui-pulldown-item-text, .gaia-argoui-pulldown-item, .ocean-ui-dialog-help-link {
+    text-decoration-line: none !important;
+} */
+
+/** bootstrap対策: 「集計する」「絞り込み」ダイアログ下部のボタンが半分沈む現象を回避 */
+/* .ocean-ui-dialog-buttons.gaia-argoui-dialog-buttons.gaia-argoui-dialog-buttons-general {
+    height: initial !important;
+} */
+
+/** bootstrap対策: 「レコードの一括削除」ダイアログ下部のボタンが半分沈む現象を回避 */
+/* .gaia-argoui-dialog-buttons-confirm {
+    box-sizing: content-box;
+} */
+
+
+/* .field-evaluation {
+    background-color: #DDDDFF;
+}
+
+.field-reference {
+    background-color: #DDFFDD;
+} */

@@ -1,0 +1,42 @@
+{
+    "manifest_version": 1,
+    "version": "0.1.0",
+    "type": "APP",
+    "name": {
+        "en": "[staging] General-Purpose JSON Config Plugin",
+        "ja": "[staging] 汎用J型設定プラグイン"
+    },
+    "icon": "image/camet.png",
+    "description": {
+        "en": "[staging] It is a staging build.",
+        "ja": "[staging] 開発用です。本番環境には適用しないでください。"
+    },
+    "homepage_url": {
+        "ja": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab",
+        "en": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab",
+        "zh": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab"
+    },
+    "desktop": {
+        "js": [
+            "js/desktop.js"
+        ],
+        "css": [
+            "css/51-modern-default.css",
+            "css/desktop.css"
+        ]
+    },
+    "config": {
+        "html": "html/config.html",
+        "js": [
+            "js/config.js"
+        ],
+        "css": [
+            "css/51-modern-default.css",
+            "css/config.css"
+        ],
+        "required_params": [
+            "config"
+        ]
+    },
+    "mobile": {}
+}
