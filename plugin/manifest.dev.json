@@ -3,13 +3,13 @@
     "version": "0.1.0",
     "type": "APP",
     "name": {
-        "en": "[DEBUG] DummyPlug Plug-in",
-        "ja": "[DEBUG] ダミープラグ"
+        "en": "[DEBUG] Extra Settings Plugin",
+        "ja": "[DEBUG] 拡張設定プラグイン"
     },
-    "icon": "image/dummyplug_128.png",
+    "icon": "image/extra_settings_128.png",
     "description": {
-        "en": "[DEBUG] DummyPlug Plug-in (DEBUG build)",
-        "ja": "[DEBUG] ダミープラグ（開発用）"
+        "en": "[DEBUG] Extra Settings Plugin (DEBUG build)",
+        "ja": "[DEBUG] 拡張設定プラグイン（開発用）"
     },
     "homepage_url": {
         "ja": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab",

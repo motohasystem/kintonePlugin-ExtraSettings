@@ -7,7 +7,7 @@ const StatsPlugin = require("stats-webpack-plugin");
 // マニフェストからバージョンを取得
 const manifest = require("./plugin/manifest.prod.json");
 const version = manifest.version;
-const pluginZipName = `kintonePlugin-DummyPlug-v${version}.zip`;
+const pluginZipName = `kintonePlugin-ExtraSettings-v${version}.zip`;
 
 // [定数] webpack の出力オプションを指定します
 // 'production' か 'development' を指定

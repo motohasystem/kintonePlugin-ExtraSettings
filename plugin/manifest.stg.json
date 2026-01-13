@@ -3,13 +3,13 @@
     "version": "0.1.0",
     "type": "APP",
     "name": {
-        "en": "[staging] DummyPlug Plug-in",
-        "ja": "[staging] ダミープラグ"
+        "en": "[staging] Extra Settings Plugin",
+        "ja": "[staging] 拡張設定プラグイン"
     },
-    "icon": "image/dummyplug_128.png",
+    "icon": "image/extra_settings_128.png",
     "description": {
-        "en": "[staging] DummyPlug Plug-in (staging build)",
-        "ja": "[staging] ダミープラグ（開発用）"
+        "en": "[staging] Extra Settings Plugin (staging build)",
+        "ja": "[staging] 拡張設定プラグイン（開発用）"
     },
     "homepage_url": {
         "ja": "https://www.monosus.co.jp/solutions/web-digital/dx/kintanlab",

@@ -13,12 +13,12 @@ export type SettingValue = string | {} | []
     const settingData = JSON.parse(conf["config"]);
     // const settingJson = JSON.parse(settingData["field_setting_data"]);
 
-    const pluginName = settingData['field_plugin_name'] || "ダミープラグ";
+    const pluginName = settingData['field_plugin_name'] || "拡張設定プラグイン";
 
     const message = `実行中...[ ${pluginName} ]
 PLUGIN_ID: [ ${PLUGIN_ID} ]
 
-    kintoneのJavaScriptカスタマイズコードの中から、ダミープラグに格納したJSONを取得して利用できます。
+    kintoneのJavaScriptカスタマイズコードの中から、拡張設定プラグインに格納したJSONを取得して利用できます。
     JavaScript APIの kintone.plugin.app.getConfig() メソッドで取得します。
 
     情報の取得例: 

@@ -28,10 +28,11 @@ export class Settings {
         // 設定用JSON
         , {
             'label': '設定JSON'
-            , 'desc': 'プラグインの設定JSONを入力してください。'
+            , 'desc': 'JSカスタマイズから取得したい設定値を入力してください。'
             , 'code': CONSTANTS.FIELD_SETTING_DATA
             , 'type': FieldType.MultilineText
             , 'required': false
+
         }
         ///////////////////////////////
     ]

@@ -1,12 +1,12 @@
 {
     "manifest_version": 1,
-    "version": "1.0.1",
+    "version": "1.1.0",
     "type": "APP",
     "name": {
-        "en": "DummyPlug Plug-in",
-        "ja": "ダミープラグ"
+        "en": "Extra Settings Plugin",
+        "ja": "拡張設定プラグイン"
     },
-    "icon": "image/dummyplug_128.png",
+    "icon": "image/extra_settings_128.png",
     "description": {
         "en": "Headless plug-in with only configuration screen. Please use it in combination with JavaScript customization.",
         "ja": "ヘッドレスで設定画面だけを持ちます。JavaScriptカスタマイズと組み合わせてお使いください。"

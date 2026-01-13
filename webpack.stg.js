@@ -1,14 +1,13 @@
-
-const path = require('path');
-const KintonePlugin = require('@kintone/webpack-plugin-kintone-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin")
-const StatsPlugin = require('stats-webpack-plugin');
+const path = require("path");
+const KintonePlugin = require("@kintone/webpack-plugin-kintone-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const TerserPlugin = require("terser-webpack-plugin");
+const StatsPlugin = require("stats-webpack-plugin");
 
 // マニフェストからバージョンを取得
 const manifest = require("./plugin/manifest.stg.json");
 const version = manifest.version;
-const pluginZipName = `kintonePlugin-DummyPlug-v${version}-stg.zip`;
+const pluginZipName = `plugin_stg.zip`;
 
 // [定数] webpack の出力オプションを指定します
 // 'production' か 'development' を指定
@@ -22,27 +21,27 @@ module.exports = {
 
     entry: {
         // mobile: './src/js/mobile.js',
-        config: './src/ts/config/main.ts',
-        desktop: "./src/ts/desktop/main.ts"
+        config: "./src/ts/config/main.ts",
+        desktop: "./src/ts/desktop/main.ts",
     },
     output: {
-        path: path.resolve(__dirname, 'plugin', 'js'),
-        filename: '[name].js'
+        path: path.resolve(__dirname, "plugin", "js"),
+        filename: "[name].js",
     },
-    devtool: 'inline-source-map',
+    devtool: "inline-source-map",
     // devtool: "hidden-source-map",
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json', '.css', '.scss']
+        extensions: [".ts", ".tsx", ".js", ".json", ".css", ".scss"],
     },
     module: {
         rules: [
             {
-                test: /\.(ts|js)x?$/, 
-                loader: 'babel-loader', 
-                exclude: /node_modules/ 
-            }
-            , {
-                test:  /\.s[ac]ss$/i,
+                test: /\.(ts|js)x?$/,
+                loader: "babel-loader",
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.s[ac]ss$/i,
                 use: [
                     // linkタグに出力する機能
                     "style-loader",
@@ -58,39 +57,38 @@ module.exports = {
                             // 0 => no loaders (default);
                             // 1 => postcss-loader;
                             // 2 => postcss-loader, sass-loader
-                            importLoaders: 2
-                        }
+                            importLoaders: 2,
+                        },
                     },
                     {
                         loader: "sass-loader",
                         options: {
                             // ソースマップの利用有無
-                            sourceMap: enabledSourceMap
+                            sourceMap: enabledSourceMap,
                         },
                     },
-                ]
-            }
+                ],
+            },
         ],
     },
     plugins: [
         new KintonePlugin({
-            manifestJSONPath: './plugin/manifest.json',
-            privateKeyPath: './private_stg.ppk',
-            pluginZipPath: `./dist/${pluginZipName}`
-        })
-        , new ForkTsCheckerWebpackPlugin()
-        , new TerserPlugin({
+            manifestJSONPath: "./plugin/manifest.json",
+            privateKeyPath: "./private_stg.ppk",
+            pluginZipPath: `./dist/${pluginZipName}`,
+        }),
+        new ForkTsCheckerWebpackPlugin(),
+        new TerserPlugin({
             terserOptions: {
-                compress: { drop_console: false }   // true: console.log()を削除
-            }
-        })
-        , new StatsPlugin('stats.json', {
+                compress: { drop_console: false }, // true: console.log()を削除
+            },
+        }),
+        new StatsPlugin("stats.json", {
             chunkModules: true,
-        })
+        }),
     ],
     cache: true,
     watchOptions: {
-        poll: true
-    }
-
+        poll: true,
+    },
 };

@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 // マニフェストからバージョンを取得
 const manifest = require("./plugin/manifest.dev.json");
 const version = manifest.version;
-const pluginZipName = `kintonePlugin-DummyPlug-v${version}-dev.zip`;
+const pluginZipName = `plugin_dev.zip`;
 
 // [定数] webpack の出力オプションを指定します
 // 'production' か 'development' を指定
@@ -16,74 +16,74 @@ const MODE = "development";
 const enabledSourceMap = MODE === "development";
 
 module.exports = {
-    mode: MODE,
+  mode: MODE,
 
-    entry: {
-        // mobile: './src/js/mobile.js',
-        config: "./src/ts/config/main.ts",
-        desktop: "./src/ts/desktop/main.ts",
-    },
-    output: {
-        path: path.resolve(__dirname, "plugin", "js"),
-        filename: "[name].js",
-    },
-    devtool: "inline-source-map",
-    resolve: {
-        extensions: [".ts", ".tsx", ".js", ".json", ".css"],
-    },
-    module: {
-        rules: [
-            {
-                test: /\.(ts|js)x?$/,
-                loader: "babel-loader",
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.s[ac]ss$/i,
-                use: [
-                    // linkタグに出力する機能
-                    "style-loader",
-                    // CSSをバンドルするための機能
-                    {
-                        loader: "css-loader",
-                        options: {
-                            // オプションでCSS内のurl()メソッドの取り込みを禁止する
-                            url: false,
-                            // ソースマップの利用有無
-                            sourceMap: enabledSourceMap,
+  entry: {
+    // mobile: './src/js/mobile.js',
+    config: "./src/ts/config/main.ts",
+    desktop: "./src/ts/desktop/main.ts",
+  },
+  output: {
+    path: path.resolve(__dirname, "plugin", "js"),
+    filename: "[name].js",
+  },
+  devtool: "inline-source-map",
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".json", ".css"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(ts|js)x?$/,
+        loader: "babel-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // linkタグに出力する機能
+          "style-loader",
+          // CSSをバンドルするための機能
+          {
+            loader: "css-loader",
+            options: {
+              // オプションでCSS内のurl()メソッドの取り込みを禁止する
+              url: false,
+              // ソースマップの利用有無
+              sourceMap: enabledSourceMap,
 
-                            // 0 => no loaders (default);
-                            // 1 => postcss-loader;
-                            // 2 => postcss-loader, sass-loader
-                            importLoaders: 2,
-                        },
-                    },
-                    {
-                        loader: "sass-loader",
-                        options: {
-                            // ソースマップの利用有無
-                            sourceMap: enabledSourceMap,
-                        },
-                    },
-                ],
+              // 0 => no loaders (default);
+              // 1 => postcss-loader;
+              // 2 => postcss-loader, sass-loader
+              importLoaders: 2,
             },
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              // ソースマップの利用有無
+              sourceMap: enabledSourceMap,
+            },
+          },
         ],
-    },
-    plugins: [
-        new KintonePlugin({
-            manifestJSONPath: "./plugin/manifest.dev.json",
-            privateKeyPath: "./private_dev.ppk",
-            pluginZipPath: `./dist/${pluginZipName}`,
-        }),
-        new ForkTsCheckerWebpackPlugin(),
-        new TerserPlugin({
-            terserOptions: {
-                compress: { drop_console: false }, // true: console.log()を削除
-            },
-        }),
+      },
     ],
-    cache: true,
-    watchOptions: {
-        poll: true,
-    },
+  },
+  plugins: [
+    new KintonePlugin({
+      manifestJSONPath: "./plugin/manifest.dev.json",
+      privateKeyPath: "./private_dev.ppk",
+      pluginZipPath: `./dist/${pluginZipName}`,
+    }),
+    new ForkTsCheckerWebpackPlugin(),
+    new TerserPlugin({
+      terserOptions: {
+        compress: { drop_console: false }, // true: console.log()を削除
+      },
+    }),
+  ],
+  cache: true,
+  watchOptions: {
+    poll: true,
+  },
 };
