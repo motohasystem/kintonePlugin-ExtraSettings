@@ -42,3 +42,8 @@ h4 span.item-caption-required{
     width: 100%;
     height: 100%;    
 }
+
+textarea.drop-import-target-active {
+    border: 2px dashed #3b82f6 !important;
+    background-color: #eff6ff;
+}
