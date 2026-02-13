@@ -42,8 +42,26 @@ function enableAutoValidation(FIELD_SETTING_DATA: string) {
     }
 
     inputElem.addEventListener('blur', (_event) => {
-        const value = inputElem.value.trim()
-        const format = detectFormat(value)
+        const originalValue = inputElem.value
+        const detectedFormat = detectFormat(originalValue.trim())
+
+        if (detectedFormat === 'JSON') {
+            const formatted = formatJsonText(originalValue)
+            if (formatted !== originalValue) {
+                inputElem.value = formatted
+                inputElem.dispatchEvent(new Event('input', { bubbles: true }))
+                inputElem.dispatchEvent(new Event('change', { bubbles: true }))
+            }
+        } else if (detectedFormat === 'YAML') {
+            const formatted = formatYamlText(originalValue)
+            if (formatted !== originalValue) {
+                inputElem.value = formatted
+                inputElem.dispatchEvent(new Event('input', { bubbles: true }))
+                inputElem.dispatchEvent(new Event('change', { bubbles: true }))
+            }
+        }
+
+        const format = detectFormat(inputElem.value.trim())
 
         // 結果表示
         const messageElemId = `${FIELD_SETTING_DATA}_format_message`
@@ -65,6 +83,99 @@ function enableAutoValidation(FIELD_SETTING_DATA: string) {
             messageElem.style.color = 'gray'
         }
     })
+}
+
+function formatJsonText(value: string): string {
+    try {
+        return JSON.stringify(JSON.parse(value), null, 2)
+    } catch (_error) {
+        return value
+    }
+}
+
+function formatYamlText(value: string): string {
+    const normalized = value.replace(/\r\n/g, '\n')
+    const lines = normalized.split('\n')
+    const formattedLines: string[] = []
+    let blockIndent = -1
+
+    lines.forEach((line) => {
+        const withoutTrailingSpaces = line.replace(/\s+$/, '').replace(/\t/g, '  ')
+        const trimmed = withoutTrailingSpaces.trim()
+        const indentLen = (withoutTrailingSpaces.match(/^\s*/) || [''])[0].length
+
+        if (!trimmed) {
+            formattedLines.push('')
+            return
+        }
+
+        // ブロックスカラー内部は内容を壊さない。
+        if (blockIndent >= 0) {
+            if (indentLen > blockIndent) {
+                formattedLines.push(withoutTrailingSpaces)
+                return
+            }
+            blockIndent = -1
+        }
+
+        if (/^#/.test(trimmed) || trimmed === '---' || trimmed === '...') {
+            formattedLines.push(withoutTrailingSpaces)
+            return
+        }
+
+        const listInlineMap = withoutTrailingSpaces.match(/^(\s*)-\s*([^:#\n][^:]*)\s*:\s*(.*)$/)
+        if (listInlineMap) {
+            const indent = listInlineMap[1]
+            const key = listInlineMap[2].trim()
+            const valuePart = listInlineMap[3].trim()
+            if (!valuePart) {
+                formattedLines.push(`${indent}- ${key}:`)
+                return
+            }
+            if (isYamlBlockScalarIndicator(valuePart)) {
+                formattedLines.push(`${indent}- ${key}: ${valuePart}`)
+                blockIndent = indent.length
+                return
+            }
+            formattedLines.push(`${indent}- ${key}: ${valuePart}`)
+            return
+        }
+
+        const mapLine = withoutTrailingSpaces.match(/^(\s*)([^:#\n][^:]*)\s*:\s*(.*)$/)
+        if (mapLine) {
+            const indent = mapLine[1]
+            const key = mapLine[2].trim()
+            const valuePart = mapLine[3].trim()
+            if (!valuePart) {
+                formattedLines.push(`${indent}${key}:`)
+                return
+            }
+            if (isYamlBlockScalarIndicator(valuePart)) {
+                formattedLines.push(`${indent}${key}: ${valuePart}`)
+                blockIndent = indent.length
+                return
+            }
+            formattedLines.push(`${indent}${key}: ${valuePart}`)
+            return
+        }
+
+        const listScalar = withoutTrailingSpaces.match(/^(\s*)-\s*(.+)$/)
+        if (listScalar) {
+            const indent = listScalar[1]
+            const valuePart = listScalar[2].trim()
+            formattedLines.push(`${indent}- ${valuePart}`)
+            return
+        }
+
+        formattedLines.push(withoutTrailingSpaces)
+    })
+
+    return formattedLines.join('\n')
+}
+
+function isYamlBlockScalarIndicator(valuePart: string): boolean {
+    const trimmed = valuePart.trim()
+    return trimmed.startsWith('|') || trimmed.startsWith('>')
 }
 
 // 設定JSONテキストエリアへのファイルドラッグ&ドロップを有効化する。
@@ -195,11 +306,6 @@ function renderValueEditor(inputElem: HTMLTextAreaElement, editorElem: HTMLEleme
         return
     }
 
-    const titleElem = document.createElement('h4')
-    titleElem.className = 'value-editor-title'
-    titleElem.textContent = `値エディタ (${format})`
-    editorElem.appendChild(titleElem)
-
     if (format === 'JSON') {
         renderJsonValueEditor(inputElem, editorElem, raw)
         return
@@ -231,11 +337,12 @@ function renderJsonValueEditor(inputElem: HTMLTextAreaElement, editorElem: HTMLE
         inputElem.dispatchEvent(new Event('change', { bubbles: true }))
     }
 
-    renderJsonTreeNode(treeElem, '$', [], parsed, 0, applyLeafChange)
+    renderJsonTreeNode(treeElem, 'JSON', [], parsed, 0, applyLeafChange)
     if (!treeElem.childElementCount) {
         appendEditorNotice(editorElem, '編集可能な値が見つかりません。', 'gray')
         return
     }
+    appendTreeToggleButtons(editorElem, treeElem)
     editorElem.appendChild(treeElem)
 }
 
@@ -331,16 +438,19 @@ function renderYamlValueEditor(inputElem: HTMLTextAreaElement, editorElem: HTMLE
     treeElem.className = 'value-editor-tree'
 
     const rootNode = buildValueTree(entries)
-    rootNode.children.forEach((childNode) => {
-        renderYamlTreeNode(treeElem, childNode, 0, (entry, newValue) => {
+    const displayRootNode: ValueTreeNode = {
+        segment: 'YAML',
+        children: rootNode.children
+    }
+    renderYamlTreeNode(treeElem, displayRootNode, 0, (entry, newValue) => {
             const serialized = serializeYamlScalar(newValue)
             lines[entry.lineIndex] = `${entry.linePrefix}${serialized}`
             inputElem.value = lines.join('\n')
             inputElem.dispatchEvent(new Event('input', { bubbles: true }))
             inputElem.dispatchEvent(new Event('change', { bubbles: true }))
-        })
     })
 
+    appendTreeToggleButtons(editorElem, treeElem)
     editorElem.appendChild(treeElem)
 }
 
@@ -436,6 +546,38 @@ function appendEditorNotice(editorElem: HTMLElement, message: string, color: str
     noteElem.textContent = message
     noteElem.style.color = color
     editorElem.appendChild(noteElem)
+}
+
+function appendTreeToggleButtons(editorElem: HTMLElement, treeElem: HTMLElement) {
+    const controlsElem = document.createElement('div')
+    controlsElem.className = 'value-editor-controls'
+
+    const expandBtn = document.createElement('button')
+    expandBtn.type = 'button'
+    expandBtn.className = 'value-editor-control-button'
+    expandBtn.textContent = '📂 展開'
+    expandBtn.addEventListener('click', () => {
+        toggleAllTreeGroups(treeElem, true)
+    })
+
+    const collapseBtn = document.createElement('button')
+    collapseBtn.type = 'button'
+    collapseBtn.className = 'value-editor-control-button'
+    collapseBtn.textContent = '📁 折りたたみ'
+    collapseBtn.addEventListener('click', () => {
+        toggleAllTreeGroups(treeElem, false)
+    })
+
+    controlsElem.appendChild(expandBtn)
+    controlsElem.appendChild(collapseBtn)
+    editorElem.appendChild(controlsElem)
+}
+
+function toggleAllTreeGroups(treeElem: HTMLElement, open: boolean) {
+    const groups = treeElem.querySelectorAll('details.value-editor-group')
+    groups.forEach((group) => {
+        (group as HTMLDetailsElement).open = open
+    })
 }
 
 function createEditorRow(

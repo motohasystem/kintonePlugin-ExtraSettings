@@ -61,6 +61,78 @@ textarea.drop-import-target-active {
     font-size: 1rem;
 }
 
+.value-editor-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.value-editor-control-button {
+    min-height: 28px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid #d4dbe8;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    color: #475569;
+    background: #ffffff;
+}
+
+.value-editor-control-button:first-child {
+    background: #ffffff;
+    border-color: #d4dbe8;
+    color: #475569;
+    box-shadow: none;
+}
+
+.value-editor-control-button:last-child {
+    background: #ffffff;
+    box-shadow: none;
+}
+
+.value-editor-control-button:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+
+.value-editor-control-button:first-child:hover {
+    background: #f8fafc;
+    box-shadow: none;
+}
+
+.value-editor-control-button:last-child:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+.value-editor-control-button:active {
+    background: #f1f5f9;
+    color: #1e293b;
+}
+
+.value-editor-control-button:first-child:active {
+    background: #f1f5f9;
+}
+
+.value-editor-control-button:last-child:active {
+    background: #f1f5f9;
+}
+
+.value-editor-control-button:focus-visible {
+    outline: 2px solid #bfdbfe;
+    outline-offset: 2px;
+}
+
 .value-editor-list {
     display: grid;
     gap: 8px;
